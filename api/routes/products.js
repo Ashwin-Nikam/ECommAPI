@@ -13,4 +13,19 @@ router.post('/', (req, res) => {
 	});
 });
 
+router.get('/:id', (req, res) => {
+	const id = req.params.id;
+	if(id === 'special') {
+		res.status(200).json({
+			message: 'You discovered a special id',
+			id: id
+		});
+	} else {
+		res.status(200).json({
+			message: 'Normal id',
+			id: id
+		});
+	}
+});
+
 module.exports = router;
