@@ -5,7 +5,15 @@ const port = process.env.PORT || 3000;
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
-// Our own custom middleware
+/*
+This is the middleware
+Routes which should handle requests
+*/
+
+app.use('/', (req, res) => {
+	res.status(200)
+		.send('Please use GET /products or GET /orders');
+});
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 
