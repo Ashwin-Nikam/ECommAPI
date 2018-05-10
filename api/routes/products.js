@@ -28,4 +28,18 @@ router.get('/:id', (req, res) => {
 	}
 });
 
+
+router.patch('/:id', (req, res) => {
+	res.status(200).json({
+		message: 'Updated product'
+	});
+});
+
+
+router.delete('/:id', (req, res) => {
+	res.status(200).json({
+		message: 'Deleted product'
+	});
+});
+
 module.exports = router;
