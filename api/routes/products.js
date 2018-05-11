@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
 		name: req.body.name,
-		proce: req.body.price
+		price: req.body.price
 	});
 	product
 	.save()
@@ -30,17 +30,17 @@ router.post('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
 	const id = req.params.id;
-	if(id === 'special') {
-		res.status(200).json({
-			message: 'You discovered a special id',
-			id: id
+	Product.findById(id)
+	.exec()
+	.then(product => {
+		console.log(product);
+		res.status(200).json(product);
+	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
 		});
-	} else {
-		res.status(200).json({
-			message: 'Normal id',
-			id: id
-		});
-	}
+	});
 });
 
 
