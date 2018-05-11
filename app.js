@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
-mongoose.connect('mongodb://localhost/bookstore');
+mongoose.connect('mongodb://localhost/shop');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
