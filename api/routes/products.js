@@ -20,11 +20,16 @@ router.post('/', (req, res) => {
 	.save()
 	.then(result => {
 		console.log(result);
+		res.status(201).json({
+			message: 'Handling POST requests to /products',
+			createdProduct: product
+		});
 	})
-	.catch(err => console.log(err));
-	res.status(201).json({
-		message: 'Handling POST requests to /products',
-		createdProduct: product
+	.catch(err => {
+		console.log(err);
+		res.status(500).json({
+			error: err
+		})
 	});
 });
 
@@ -34,7 +39,10 @@ router.get('/:id', (req, res) => {
 	.exec()
 	.then(product => {
 		console.log(product);
-		res.status(200).json(product);
+		if(product)
+			res.status(200).json(product);
+		else
+			res.status(404).json({message: 'No valid entry found for provided id'});
 	})
 	.catch(err => {
 		res.status(500).json({
