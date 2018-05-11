@@ -5,8 +5,15 @@ const mongoose = require('mongoose');
 const Product = require('../models/product'); 
 
 router.get('/', (req, res) => {
-	res.status(200).json({
-		message: 'Handling GET requests to /products'
+	Product.find()
+	.exec()
+	.then(products => {
+		console.log(products);
+		res.status(200).json(products);
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(500).json({error: err});
 	});
 });
 
@@ -29,7 +36,7 @@ router.post('/', (req, res) => {
 		console.log(err);
 		res.status(500).json({
 			error: err
-		})
+		});
 	});
 });
 
@@ -45,6 +52,7 @@ router.get('/:id', (req, res) => {
 			res.status(404).json({message: 'No valid entry found for provided id'});
 	})
 	.catch(err => {
+		console.log(err);
 		res.status(500).json({
 			error: err
 		});
@@ -60,8 +68,15 @@ router.patch('/:id', (req, res) => {
 
 
 router.delete('/:id', (req, res) => {
-	res.status(200).json({
-		message: 'Deleted product'
+	const id = req.params.id;
+	Product.remove({_id: id})
+	.exec()
+	.then(result => {
+		res.status(200).json(result);
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(500).json({error: err});
 	});
 });
 
