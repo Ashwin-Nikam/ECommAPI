@@ -61,9 +61,26 @@ router.get('/:id', (req, res) => {
 
 
 router.patch('/:id', (req, res) => {
-	res.status(200).json({
-		message: 'Updated product'
-	});
+	const id = req.params.id;
+	/*
+		This is done to update either name or price
+		or both
+	*/
+	const updateOps = {};
+	for(const ops of req.body) {
+		updateOps[ops.propName] = ops.value;
+	}
+	console.log(updateOps);
+	Product.update({_id: id}, {$set: updateOps})
+	.exec()
+	.then(result => {
+		console.log(res);
+		res.status(200).json(result);
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(500).json({error: err});
+	})
 });
 
 
