@@ -6,10 +6,24 @@ const Product = require('../models/product');
 
 router.get('/', (req, res) => {
 	Product.find()
+	.select('name price _id')
 	.exec()
 	.then(products => {
-		console.log(products);
-		res.status(200).json(products);
+		const response = {
+			count: products.length,
+			products: products.map(doc => {
+				return {
+					name: doc.name,
+					price: doc.price,
+					_id: doc._id,
+					request: {
+						type: 'GET',
+						url: 'http://localhost:3000/products/' + doc._id
+					}
+				}
+			})
+		};
+		res.status(200).json(response);
 	})
 	.catch(err => {
 		console.log(err);
