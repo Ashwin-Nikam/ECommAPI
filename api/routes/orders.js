@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Order = require('../models/order');
-
+const Product = require('../models/product');
 
 router.get('/', (req, res) => {
 	Order.find()
@@ -33,13 +33,25 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	const order = new Order({
-		_id: mongoose.Types.ObjectId(),
-		quantity: req.body.quantity,
-		product: req.body.productId
-	});
-	order
-	.save()
+	/*
+		First we check if the product with the 
+		productId mentioned is already there in
+		the database.
+	*/
+	Product.findById(req.body.productId)
+	.then(product => {
+		if(!product) {
+			return res.status(404).json({
+				message: 'Product not found'
+			});
+		}
+		const order = new Order({
+			_id: mongoose.Types.ObjectId(),
+			quantity: req.body.quantity,
+			product: req.body.productId
+		});
+		return order.save();
+	})
 	.then(result => {
 		res.status(201).json({
 			message: 'Order stored',
@@ -55,8 +67,8 @@ router.post('/', (req, res) => {
 		});
 	})
 	.catch(err => {
-		console.log(err);
 		res.status(500).json({
+			message: 'Product not found',
 			error: err
 		});
 	});
