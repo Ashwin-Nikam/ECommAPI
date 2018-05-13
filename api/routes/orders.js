@@ -8,6 +8,7 @@ const Product = require('../models/product');
 router.get('/', (req, res) => {
 	Order.find()
 	.select('product quantity _id')
+	.populate('product', 'name') // Use this to show required the data of the product
 	.exec()
 	.then(docs => {
 		res.status(200).json({
