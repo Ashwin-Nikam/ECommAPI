@@ -2,7 +2,22 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});
+
+/*
+	Some multer code to select destination where to 
+	store files locally and what to name them.
+*/
+
+const storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		cb(null, './uploads');
+	},
+	filename: function(req, file, cb) {
+		cb(null, new Date().toISOString() + file.originalname)
+	}
+});
+
+const upload = multer({storage: storage});
 
 const Product = require('../models/product'); 
 
