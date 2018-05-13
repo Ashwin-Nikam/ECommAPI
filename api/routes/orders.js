@@ -75,9 +75,21 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	res.status(200).json({
-		message: 'Order details',
-		orderId: req.params.id
+	Order.findById(req.params.id)
+	.exec()
+	.then(order => {
+		res.status(200).json({
+			order: order,
+			request: {
+				type: 'GET',
+				url: 'http://localhost:3000/orders'
+			}
+		});
+	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
+		});
 	});
 });
 
