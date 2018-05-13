@@ -11,6 +11,8 @@ const orderRoutes = require('./api/routes/orders');
 mongoose.connect('mongodb://localhost/shop');
 
 app.use(morgan('dev'));
+// Making the uploads folder publicly accessible so that we can view images
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

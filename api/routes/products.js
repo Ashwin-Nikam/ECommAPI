@@ -39,7 +39,7 @@ const Product = require('../models/product');
 
 router.get('/', (req, res) => {
 	Product.find()
-	.select('name price _id') // Now this isn't necessary 
+	.select('name price _id productImage') // Now this isn't necessary 
 	.exec()
 	.then(products => {
 		const response = {
@@ -48,6 +48,7 @@ router.get('/', (req, res) => {
 				return {
 					name: doc.name,
 					price: doc.price,
+					productImage: doc.productImage,
 					_id: doc._id,
 					request: {
 						type: 'GET',
@@ -68,7 +69,8 @@ router.post('/', upload.single('productImage'), (req, res) => {
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
 		name: req.body.name,
-		price: req.body.price
+		price: req.body.price,
+		productImage: req.file.path
 	});
 	product
 	.save()
@@ -96,7 +98,7 @@ router.post('/', upload.single('productImage'), (req, res) => {
 router.get('/:id', (req, res) => {
 	const id = req.params.id;
 	Product.findById(id)
-	.select('name price _id')
+	.select('name price _id productImage')
 	.exec()
 	.then(product => {
 		if(product) {
