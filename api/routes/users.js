@@ -56,8 +56,8 @@ router.post('/login', (req, res, next) => {
 					email: user[0].email,
 					userId: user[0]._id
 				}, 
-				process.env.JWT_KEY, 
-				{ expiresIn: "1h" });
+				process.env.JWT_KEY, // This variable is in nodemon.json 
+				{ expiresIn: "1h" }); // Access token expires in 1 hour
 
 				return res.status(200).json({
 					message: 'Auth successful',
