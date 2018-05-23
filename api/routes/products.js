@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../middleware/check-auth');
 
 /*
 	Some multer code to select destination where to 
@@ -64,7 +65,7 @@ router.get('/', (req, res) => {
 	});
 });
 
-router.post('/', upload.single('productImage'), (req, res) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res) => {
 	console.log(req.file);
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
