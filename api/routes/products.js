@@ -121,7 +121,7 @@ router.get('/:id', (req, res) => {
 });
 
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', checkAuth, (req, res) => {
 	const id = req.params.id;
 	/*
 		This is done to update either name or price
@@ -148,7 +148,7 @@ router.patch('/:id', (req, res) => {
 });
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
 	const id = req.params.id;
 	Product.remove({_id: id})
 	.exec()

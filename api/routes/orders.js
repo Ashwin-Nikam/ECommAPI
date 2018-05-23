@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Order = require('../models/order');
 const Product = require('../models/product');
 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res, next) => {
 	Order.find()
 	.select('product quantity _id')
 	.populate('product', 'name') // Use this to show required the data of the product
@@ -33,7 +34,7 @@ router.get('/', (req, res) => {
 	});
 });
 
-router.post('/', (req, res) => {
+router.post('/', checkAuth, (req, res, next) => {
 	/*
 		First we check if the product with the 
 		productId mentioned is already there in
@@ -75,7 +76,7 @@ router.post('/', (req, res) => {
 	});
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', checkAuth, (req, res, next) => {
 	Order.findById(req.params.id)
 	.populate('product')
 	.exec()
@@ -100,7 +101,7 @@ router.get('/:id', (req, res) => {
 	});
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
 	Order.remove({ _id: req.params.id })
 	.exec()
 	.then(result => {
